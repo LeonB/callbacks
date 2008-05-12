@@ -7,7 +7,7 @@ end
 
 Tester.callbacks == [:boot, :exit]
 
-t = Test.new
+t = Tester.new
 t.callbacks == [:boot, :exit]
 t.add_callbacks :testing
 

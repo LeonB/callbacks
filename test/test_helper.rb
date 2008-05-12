@@ -5,8 +5,6 @@ $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'callbacks'
 
 class Tester
-  include Callbacks
-  add_callbacks :boot, :exit
 
   def boot
     p "booting"
@@ -20,4 +18,7 @@ class Tester
     p "testing"
   end
 
+  include Callbacks
+  add_callbacks :boot, :exit
+  
 end
