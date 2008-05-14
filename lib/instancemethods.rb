@@ -1,32 +1,44 @@
 module Callbacks
   module InstanceMethods
+    
+    def callbacks(show_classvars = true)
+      return self.instance_callbacks if show_classvars == false
+      return self.class_callbacks + self.instance_callbacks if show_classvars == true
+    end
+  
+    def add_callbacks(*callbacks)
+      callbacks.each do |calbacks|
+        self.add_callback(callback)
+      end
+    end
+  
+    def add_callback(callback)
+      self.callbacks(false) << callback
+    end
+    
     #Really don't know what this does :p But it works!
     #I'm really, really bad at metaprogramming
     def callbacks_for(method, type)
-      
-      self.class.class_eval do
-        callbacks_for(method, type)
+      begin
+        return self.callback_actions[method] if type.nil?
+        return self.callback_actions[method][type] ||= []
+      rescue NoMethodError
+        return []
       end
+    end
+    
+    def class_callbacks
+      self.class.callbacks
+    end
+    
+    def instance_callbacks
+      @callbacks ||= []
     end
 
     def trigger_callbacks(method, type)
     
       self.callbacks_for(method, type).each do |callback|
-      
-        result = case callback
-        when Symbol
-          self.send(callback)
-        when String
-          eval(callback, binding)
-        when Proc, Method
-          callback.call(self)
-        else
-          if callback.respond_to?(method)
-            callback.send(method, self)
-          else
-            raise "Callbacks must be a symbol denoting the method to call, a string to be evaluated, a block to be invoked, or an object responding to the callback method."
-          end
-        end
+        callback.call
       end
     
       #Should I return something?

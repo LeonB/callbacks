@@ -19,6 +19,4 @@ class Tester
   end
 
   include Callbacks
-  add_callbacks :boot, :exit
-  
 end

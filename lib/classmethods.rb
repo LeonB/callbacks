@@ -1,40 +1,43 @@
 module Callbacks
   module ClassMethods
-    #attr_accessor :callbacks
-    def callbacks
-      @@callbacks ||= {}
+    
+    def callbacks()
+      @@callbacks ||= []
     end
     
-    def callbacks=(arg)
-      @@callbacks=arg
+    def callback_actions()
+      @@callback_actions ||= {}
     end
-    
-    def add_callbacks(*args)
-      args.each do |arg|
-        arg = arg.to_sym
-        CALLBACKS << arg
-        init_callback_method(arg)
+  
+    def add_callback_methods(*callbacks)
+      callbacks.each do |callback|
+        self.add_callback_method(callback)
       end
     end
+    alias_method(:add_callbacks, :add_callback_methods)
+  
+    #add_callback
+    def add_callback_method(callback)
+      self.callbacks << callback
+      self.build_callback_method(callback)
+    end
+    alias_method(:add_callback, :add_callback_method)
     
-    def init_callback_method(method)
-      
-      #You can't use meta_def OR define_method, because in ruby1.8 a block can't accept block parameters
-      #This is changed in 1.9
+    def build_callback_method(method)
         
-      instance_eval do
-      class_eval <<-"end_eval"
+      #instance_eval do
+        instance_eval <<-"end_eval"
 
-        def before_#{method}(*callbacks, &block)
-          add_callback :before, :#{method}, *callbacks, &block
-        end
+          def before_#{method}(*callbacks, &block)
+            add_callback_action :before, :#{method}, *callbacks, &block
+          end
 
-        def after_#{method}(*callbacks, &block)
-          add_callback :after, :#{method}, *callbacks, &block
-        end
+          def after_#{method}(*callbacks, &block)
+            add_callback_action :after, :#{method}, *callbacks, &block
+          end
 
-      end_eval
-      end
+        end_eval
+      #end
       
       class_eval do
         define_method "#{method}_with_callbacks" do
@@ -48,32 +51,23 @@ module Callbacks
       send :alias_method, method, "#{method}_with_callbacks"
     end
     
+    def add_callback_action(type, method, code, &block)
+      ca = self.callback_actions
+      
+      ca[method] = {} if ca[method].nil?
+      ca[method][type] = [] if ca[method][type].nil?
+      
+      ca[method][type] << Callback.new(method, code, &block)
+    end
+    
     def callbacks_for(method, type = nil)
       begin
-        return self.callbacks[method] if type.nil?
-        return self.callbacks[method][type] ||= []
+        return self.callback_actions[method] if type.nil?
+        return self.callback_actions[method][type] ||= []
       rescue NoMethodError
         return []
       end
     end
     
-    def add_callback(type, method, *args, &block)
-      callbacks = self.callbacks
-      
-      callbacks[method] = {} if callbacks[method].nil?
-      callbacks[method][type] = [] if callbacks[method][type].nil?
-      
-      if args.empty? && block.nil?
-        raise ArgumentError, "please specify either a task name or a block to invoke"
-      elsif args.any? && block
-        raise ArgumentError, "please specify only a task name or a block, but not both"
-      elsif block_given?
-        callbacks[method][type] << block
-      else
-        args.each do |arg|
-          callbacks[method][type] << arg
-        end
-      end
-    end 
   end
 end

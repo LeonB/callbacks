@@ -5,6 +5,7 @@ module Callbacks
   require 'observer'
   require 'instancemethods.rb'
   require 'classmethods.rb'
+  require 'callback.rb'
   
   #  CALLBACKS = [
   #    'song_halfway',
@@ -19,6 +20,7 @@ module Callbacks
   def self.included(base) #:nodoc:
     base.extend Observable
     base.extend Callbacks::ClassMethods
+    #base.send(:include, Callbacks::ClassMethods)
     base.send(:include, Callbacks::InstanceMethods)
   end
 end

@@ -1,9 +1,10 @@
 class Callback
   attr_accessor :method, :input, :proc
   
-  def initalize(method, input)
+  def initialize(method, input, &block)
     self.method = method
     self.input = input
+    self.input = block if block_given?
   end
   
   def call
