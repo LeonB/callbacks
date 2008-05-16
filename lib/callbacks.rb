@@ -3,6 +3,7 @@
 # http://coderepos.org/share/browser/lang/ruby/pritter/vendor/xmpp4r/lib/xmpp4r/callbacks.rb
 module Callbacks
   require 'observer'
+  require 'ext/metaid.rb'
   require 'instancemethods.rb'
   require 'classmethods.rb'
   require 'callback.rb'
@@ -20,7 +21,6 @@ module Callbacks
   def self.included(base) #:nodoc:
     base.extend Observable
     base.extend Callbacks::ClassMethods
-    #base.send(:include, Callbacks::ClassMethods)
     base.send(:include, Callbacks::InstanceMethods)
   end
 end
