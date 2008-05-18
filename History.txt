@@ -1,4 +1,5 @@
-== 1.0.0 / 2008-05-10
+== 0.0.1 / 2008-05-10
 
-* 1 major enhancement
-  * Birthday!
+* First release
+  * API not yet stable
+  * Only supports adding hooks to classes not instances. Instances are planned for 0.2

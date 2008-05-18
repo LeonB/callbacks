@@ -46,14 +46,14 @@ module Callbacks
       end_eval
       #end
       
-      class_eval do
-        define_method "#{method}_with_callbacks" do
-          trigger_callback_actions(method, :before)
+      class_eval <<-"end_eval"
+        def #{method}_with_callbacks
+          trigger_callback_actions(:#{method}, :before)
           retval = self.send("#{method}_without_callbacks")
-          trigger_callback_actions(method, :after)
+          trigger_callback_actions(:#{method}, :after)
           return retval
         end
-      end
+      end_eval
       
       send :alias_method, "#{method}_without_callbacks", method
       send :alias_method, method, "#{method}_with_callbacks"

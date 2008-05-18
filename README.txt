@@ -1,15 +1,18 @@
 callbacks
     by Leon Bogaert
+    http://github.com/LeonB/callbacks
+    callbacks.rubyforge.com
     www.vanutsteen.nl
 
 == DESCRIPTION:
 
-This package makes it simple to add callbacks to ruby classes
+This package makes it simple to add callbacks a.k.a. "hooks" to ruby classes
 
 == FEATURES/PROBLEMS:
 
 * It now only supports adding callbacks to classes
 * Different callbacks for instances comes with version 0.2
+* I haven't decided yet on the API, maybe I'll swap "callback_methods" with "hooks"
 
 == SYNOPSIS:
 
