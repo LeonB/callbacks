@@ -15,7 +15,8 @@ PROJ.email = 'leon@vanutsteen.nl'
 PROJ.url = 'www.vanutsteen.nl'
 PROJ.rubyforge.name = 'callbacks'
 PROJ.version = File.read('Version.txt').strip
-PROJ.exclude = %w(.git pkg nbproject doc/)
+PROJ.exclude = %w(.git pkg nbproject doc/ ^test[0-9]*.rb$)
+PROJ.rdoc.exclude = %w(Version.txt)
 
 PROJ.spec.opts << '--color'
 

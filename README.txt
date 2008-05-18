@@ -1,26 +1,40 @@
 callbacks
-    by FIXME (your name)
-    FIXME (url)
+    by Leon Bogaert
+    www.vanutsteen.nl
 
 == DESCRIPTION:
 
-FIXME (describe your package)
+This package makes it simple to add callbacks to ruby classes
 
 == FEATURES/PROBLEMS:
 
-* FIXME (list of features or problems)
+* It now only supports adding callbacks to classes
+* Different callbacks for instances comes with version 0.2
 
 == SYNOPSIS:
 
-  FIXME (code sample of usage)
+    require 'callbacks'
+
+    Object.send(:include, Callbacks)
+    Object.add_callback_methods :inspect
+    Object.before_inspect do
+    print "Going to inspect #{self.class}\n"
+    end
+
+    o = Object.new
+    o.inspect #will print "Going to inspect Object"
 
 == REQUIREMENTS:
 
-* FIXME (list of requirements)
+* ruby 1.8 (might work with ruby1.9)
 
 == INSTALL:
 
-* FIXME (sudo gem install, anything else)
+* gem install callbacks
+
+== THANKS:
+    * RDoc [http://www.ruby-doc.org/core/classes/RDoc.html]
+    * Bones [http://codeforpeople.rubyforge.org/bones]
 
 == LICENSE:
 

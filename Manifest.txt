@@ -2,8 +2,13 @@ History.txt
 Manifest.txt
 README.txt
 Rakefile
+Version.txt
 bin/callbacks
+ext/metaid.rb
+lib/callback.rb
 lib/callbacks.rb
+lib/classmethods.rb
+lib/instancemethods.rb
 spec/callbacks_spec.rb
 spec/spec_helper.rb
 tasks/ann.rake
@@ -19,3 +24,5 @@ tasks/spec.rake
 tasks/svn.rake
 tasks/test.rake
 test/test_callbacks.rb
+test/test_helper.rb
+test/tester_class.rb

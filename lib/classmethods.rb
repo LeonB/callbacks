@@ -2,11 +2,13 @@ module Callbacks
   module ClassMethods
     
     def callback_methods
-      @@callback_methods ||= []
+      #Use one @, else it gets stored in the module and then it will be avaiable in every class that uses callback
+      @callback_methods ||= []
     end 
    
     def callback_actions
-      @@callback_actions ||= {}
+      #Use one @, else it gets stored in the module and then it will be avaiable in every class that uses callback
+      @callback_actions ||= {}
     end
    
     def add_callback_methods(*callbacks)
@@ -47,8 +49,9 @@ module Callbacks
       class_eval do
         define_method "#{method}_with_callbacks" do
           trigger_callback_actions(method, :before)
-          self.send("#{method}_without_callbacks")
+          retval = self.send("#{method}_without_callbacks")
           trigger_callback_actions(method, :after)
+          return retval
         end
       end
       
@@ -68,15 +71,6 @@ module Callbacks
         code.each do |c|
           ca[method][type] << Callback.new(method, c)
         end
-      end
-    end
-    
-    def callback_actions_for(method, type = nil)
-      begin
-        return self.callback_actions[method] if type.nil?
-        return self.callback_actions[method][type] ||= []
-      rescue NoMethodError
-        return []
       end
     end
     
