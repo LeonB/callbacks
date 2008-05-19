@@ -1,0 +1,106 @@
+---
+title:  Callbacks
+filter:
+- erb
+---
+
+<h2>Callbacks?</h2>
+<p>You know! That nifty feature that's also in Rails. First let me explain what callbacks are: callbacks are pieces of code
+  that get called whenever a predefined action occurs.
+</p>
+
+<p>A simple example: when a song in your favourite music player
+  has ended a callback could be issued which will update the UI, jump to the next song and update your 
+  <a href="http://last.fm">last.fm</a> account.
+</p>
+
+<p>
+  This is of course a very simple example (I don't know how music players work). But it could well work just like I described.
+</p>
+
+<h2>Usage</h2>
+<p>But if you found this little gem, you of course now what callbacks are. So lets jump to the nice stuff: code examples!</p>
+
+<% coderay(:lang => "ruby", :line_numbers => 'inline') do -%>
+require 'callbacks'
+
+Object.send(:include, Callbacks)
+Object.add_callback_methods :inspect
+Object.before_inspect do
+  print "Going to inspect #{self.class}\n"
+end
+
+o = Object.new
+o.inspect #will print "Going to inspect Object"
+<% end %>
+
+<p>Another (better example)</p>
+<% coderay(:lang => "ruby", :line_numbers => 'inline') do -%>
+class MusicPlayer
+
+  def play
+    p 'begining to play song'
+    sleep 5
+    self.end_of_song
+  end
+
+  def end_of_song
+    p 'End reached. Quiting player'
+  end
+
+  include Callbacks
+  add_callback_methods :end_of_song
+
+  before_end_of_song do
+    p "I'm almost gonna die. I feel the end coming."
+  end
+
+  after_end_of_song do
+    p 'Arghhh...'
+  end
+end
+
+mp = MusicPlayer.new
+mp.play
+<% end %>
+
+<h2>How is this magic achieved?</h2>
+
+<p>
+  First of all: when you include the Callbacks module in a class,several class methods get added. For example:
+  <ul>
+    <li>add_callback_methods</li>
+    <li>callback_methods</li>
+    <li>callback_actions</li>
+    <li>et cetera</li>
+  </ul>
+</p>
+
+<p>
+  An instance variable called <code>@callback_methods</code> and one called <code>@callback_actions</code> are now available in the class where you included Callbacks.
+  When you add a callback with <code>add_callback_methods()</code>, @callback_methods gets filled.
+  A couple of more methods are generated:
+  <ul>
+    <li>before_#{method}</li>
+    <li>after_#{method}</li>
+    <li>#{method}_without_callbacks</li>
+  </ul>
+</p>
+
+<p>Now we can add actions to the class with the usage of (for example) <code>after_boot</code> & <code>before_boot</code></p>
+<p>With these two methods the instance variable @callback_actions is filled.</p>
+<p>Callbacks are stored as a callback object in this variable. The object saves the original input containing one of these:</p>
+<ul>
+  <li>String</li>
+  <li>Proc</li>
+  <li>Block</li>
+  <li>Symbol</li>
+</ul>
+<p>The very first time a callback is called, a proc (or block. Depending on the need to access "self" of the class used for the callbacks) is generated and stored in the callback object.</p>
+
+<h2>More documentation</h2>
+<p>More documentation can be found <a href="http://callbacks.rubyforge.org/docs/" title="more documenation">here</a>.
+
+<h2>Future</h2>
+<p>In version 0.2 I want to add stuff so you can add callbacks to this one instance of a class and not ALL instances. If you have interesting suggestions: mail me!</p>
+<p>And I think about adding some method aliases like <code>add_hook</code> or <code>add_handler</code> and stuff like that.</p>
