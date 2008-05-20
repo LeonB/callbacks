@@ -1,6 +1,4 @@
-#Stolen from rails/activerecord
-#TODO: look at 
-# http://coderepos.org/share/browser/lang/ruby/pritter/vendor/xmpp4r/lib/xmpp4r/callbacks.rb
+#Idea stolen from rails/activerecord
 module Callbacks
   require 'observer'
   require 'ext/metaid.rb'
@@ -24,3 +22,6 @@ module Callbacks
     base.send(:include, Callbacks::InstanceMethods)
   end
 end
+
+#TODO: add aliases like add_hook(), callbacks(), et cetera
+#TODO: feature to add hooks/callbacks to instances instead of only classes

@@ -11,6 +11,6 @@ SITE.base = 'http://callbacks.rubyforge.org'
 SITE.host = 'rubyforge.org'
 SITE.user = 'leonb'
 SITE.remote_dir = '/var/www/gforge-projects/callbacks'
-SITE.exclude = %w(docs)
+SITE.rsync_args = %w(-av --delete --exclude=docs/)
 
 # EOF

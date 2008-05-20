@@ -23,6 +23,7 @@ tasks/setup.rb
 tasks/spec.rake
 tasks/svn.rake
 tasks/test.rake
+test/profile.rb
 test/test_callbacks.rb
 test/test_helper.rb
 test/tester_class.rb

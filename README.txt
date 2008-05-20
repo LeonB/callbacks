@@ -1,8 +1,8 @@
 callbacks
     by Leon Bogaert
     http://github.com/LeonB/callbacks
-    callbacks.rubyforge.com
-    www.vanutsteen.nl
+    http://callbacks.rubyforge.com
+    http://www.vanutsteen.nl
 
 == DESCRIPTION:
 
@@ -43,7 +43,7 @@ This package makes it simple to add callbacks a.k.a. "hooks" to ruby classes
 
 (The MIT License)
 
-Copyright (c) 2008 FIXME (different license?)
+Copyright (c) 2008
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

@@ -7,8 +7,6 @@ module Callbacks
       #return self.class_callback_actions + self.instance_callback_actions if show_classvars == true
     end
     
-    #Really don't know what this does :p But it works!
-    #I'm really, really bad at metaprogramming
     def callback_actions_for(method, type)
       begin
         return self.callback_actions[method] if type.nil?
