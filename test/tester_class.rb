@@ -4,15 +4,19 @@ require 'callbacks'
 class Tester
 
   def boot
-    p "booting"
+    return "booting"
   end
 
   def exit
-    p "exiting"
+    return "exiting"
   end
 
   def testing
-    p "testing"
+    return "testing"
+  end
+  
+  def fill_globalvar_tests_run
+    $tests_run << 'fill_globalvar_tests_run'
   end
 
   include Callbacks
