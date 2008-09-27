@@ -13,6 +13,7 @@ This package makes it simple to add callbacks a.k.a. "hooks" to ruby classes
 * It now only supports adding callbacks to classes
 * Different callbacks for instances comes with version 0.2
 * I haven't decided yet on the API, maybe I'll swap "callback_methods" with "hooks"
+* When using add_callback_method before the method itself is defined, it won't work
 
 == SYNOPSIS:
 

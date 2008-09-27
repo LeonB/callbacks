@@ -153,6 +153,21 @@ class CallbacksTest < Test::Unit::TestCase
     assert_equal ['before_exit'], $tests_run
   end
   
+  def test_add_no_method_callback
+    assert_nothing_raised do 
+      Tester.add_callback_method :doesnotexist
+    end
+  end
+  
+  def test_no_method_callback_should_not_add_method
+    Tester.add_callback_method :nomethodcallback
+    
+    assert_raise do 
+      t = Tester.new
+      t.nomethodcallback
+    end
+  end
+  
   #  def test_callbacks_created_in_class_should_be_vissible_in_instance
   #    Tester.add_callback_methods :boot, :exit
   #    t = Tester.new
