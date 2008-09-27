@@ -8,6 +8,7 @@ namespace :test do
     t.libs = PROJ.libs
     t.test_files = if test(?f, PROJ.test.file) then [PROJ.test.file]
                    else PROJ.test.files end
+
     t.ruby_opts += PROJ.ruby_opts
     t.ruby_opts += PROJ.test.opts
   end

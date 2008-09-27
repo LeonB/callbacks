@@ -9,6 +9,9 @@ require 'callbacks'
 
 task :default => 'spec:run'
 
+SUDO = ''
+HAVE_GIT = true
+
 PROJ.name = 'callbacks'
 PROJ.authors = 'Leon Bogaert'
 PROJ.email = 'leon@vanutsteen.nl'
