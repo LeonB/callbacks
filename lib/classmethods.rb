@@ -30,8 +30,12 @@ module Callbacks
       self.callback_methods.delete(method.to_sym)
     end
     
-    def build_callback_method(method)
-        
+    def build_callback_method(method)      
+      #Does the original method exist?
+      #if not self.respond_to?(method)
+      #  add_empty_method(method)
+      #end
+      
       #instance_eval do
       instance_eval <<-"end_eval"
 

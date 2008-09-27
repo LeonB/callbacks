@@ -5,15 +5,6 @@ module Callbacks
   require 'instancemethods.rb'
   require 'classmethods.rb'
   require 'callback.rb'
-  
-  #  CALLBACKS = [
-  #    'song_halfway',
-  #    'song_end',
-  #    'boot',
-  #    'shutdown',
-  #  ]
-  
-  CALLBACKS = []
 
   #Sets all things right
   def self.included(base) #:nodoc:
