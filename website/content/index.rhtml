@@ -135,7 +135,7 @@ it overwrites the magically created method. </p>
 class Tester
   include Callbacks
 
-  add_callbacks do
+  add_callback :exit do
     before_exit do
       p 'Going to exit'
     end
