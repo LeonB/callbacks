@@ -153,18 +153,35 @@ class CallbacksTest < Test::Unit::TestCase
     assert_equal ['before_exit'], $tests_run
   end
   
-  def test_add_no_method_callback
-    assert_nothing_raised do 
-      Tester.add_callback_method :doesnotexist
-    end
+#  def test_should_not_raise_error_when_method_not_exist
+#    assert_nothing_raised do 
+#      Tester.add_callback_methods :doesnotexist
+#    end
+#  end
+  
+#  def test_no_method_callback_should_not_add_method
+#    Tester.add_callback_methods :nomethodcallback
+#    t = Tester.new
+#    
+#    assert_raise NameError do 
+#      t.nomethodcallback
+#    end
+#  end
+  
+  def test_should_use_defined_methods_in_class_as_callback
+    Tester.add_callback_methods :callback_with_defined_method
+    t = Tester.new
+    t.callback_with_defined_method
+    assert $tests_run.length > 0
   end
   
-  def test_no_method_callback_should_not_add_method
-    Tester.add_callback_method :nomethodcallback
+  def test_callback_should_only_be_certain_types
+    assert_nothing_raised do 
+      Callback.new(:inspect, 'print "This is a test"')
+    end
     
-    assert_raise do 
-      t = Tester.new
-      t.nomethodcallback
+    assert_raise RuntimeError do 
+      Callback.new(:inspect, [])
     end
   end
   
