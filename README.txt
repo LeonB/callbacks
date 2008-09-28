@@ -28,6 +28,8 @@ This package makes it simple to add callbacks a.k.a. "hooks" to ruby classes
     o = Object.new
     o.inspect #will print "Going to inspect Object"
 
+  For more code examples see: http://callbacks.rubyforge.com
+
 == REQUIREMENTS:
 
 * ruby 1.8 (might work with ruby1.9)

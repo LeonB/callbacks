@@ -8,13 +8,13 @@ module Callbacks
    
     def callback_actions
       #Use one @, else it gets stored in the module and then it will be avaiable in every class that uses callback
-      @callback_actions ||= {}
+      @callback_actions ||= CallbackChain.new
     end
    
     def add_callback_methods(*callbacks)
       callbacks.each do |callback|
         self.callback_methods << callback.to_sym
-        self.build_callback_method(callback)
+        self.build_callback_methods(callback)
       end
     end
     
@@ -30,25 +30,9 @@ module Callbacks
       self.callback_methods.delete(method.to_sym)
     end
     
-    def build_callback_method(method)      
-      #Does the original method exist?
-      #if not self.respond_to?(method)
-      #  add_empty_method(method)
-      #end
-      
-      #instance_eval do
-      instance_eval <<-"end_eval"
-
-          def before_#{method}(*callbacks, &block)
-            add_callback_action :before, :#{method}, *callbacks, &block
-          end
-
-          def after_#{method}(*callbacks, &block)
-            add_callback_action :after, :#{method}, *callbacks, &block
-          end
-
-      end_eval
-      #end
+    def build_callback_methods(method)
+      build_before_callback_method(method)
+      build_after_callback_method(method)
       
       class_eval <<-"end_eval"
         def #{method}_with_callbacks
@@ -70,12 +54,35 @@ module Callbacks
       ca[method][type] = [] if ca[method][type].nil?
       
       if block_given?
-        ca[method][type] << Callback.new(method, nil, &block)
+        callback = Callback.new(method, nil, &block)
       else
         code.each do |c|
-          ca[method][type] << Callback.new(method, c)
+          callback = Callback.new(method, c)
         end
       end
+      ca[method][type] << callback
+      return callback
+    end
+    
+    private
+    def build_before_callback_method(method)
+      instance_eval <<-"end_eval"
+      
+          def before_#{method}(*callbacks, &block)
+            add_callback_action :before, :#{method}, *callbacks, &block
+          end
+
+      end_eval
+    end
+    
+    def build_after_callback_method(method)
+      instance_eval <<-"end_eval"
+
+          def after_#{method}(*callbacks, &block)
+            add_callback_action :after, :#{method}, *callbacks, &block
+          end
+
+      end_eval
     end
     
   end

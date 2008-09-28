@@ -20,6 +20,8 @@ PROJ.exclude = %w(.git pkg/ nbproject/ doc/ ^test[0-9]*.rb$ website/ )
 PROJ.rdoc.exclude = %w(Version.txt)
 PROJ.rdoc.remote_dir = 'docs/'
 
+PROJ.rcov.opts << "--exclude rcov.rb"
+
 PROJ.spec.opts << '--color'
 
 # EOF

@@ -3,9 +3,9 @@ Manifest.txt
 README.txt
 Rakefile
 Version.txt
-bin/callbacks
 ext/metaid.rb
 lib/callback.rb
+lib/callbackchain.rb
 lib/callbacks.rb
 lib/classmethods.rb
 lib/instancemethods.rb

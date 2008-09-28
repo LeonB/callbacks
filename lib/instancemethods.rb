@@ -2,18 +2,31 @@ module Callbacks
   module InstanceMethods
     
     def callback_actions(show_classvars = true)
-      return self.class_callback_actions
+      callback_actions = self.class_callback_actions
       #return self.instance_callbacks if show_classvars == false
       #return self.class_callback_actions + self.instance_callback_actions if show_classvars == true
     end
     
-    def callback_actions_for(method, type)
+    def callback_actions_for(method, type)  
+      #Do the rescue if [method] does not exist (nil), [type] will fail
       begin
-        return self.callback_actions[method] if type.nil?
-        return self.callback_actions[method][type] ||= []
+        callback_actions = self.callback_actions[method][type] ||= []
       rescue NoMethodError
-        return []
+        callback_actions = []
       end
+      
+      #If the before/after_ method exists, and it is not already added,
+      # add it!
+      #Dit kan mooier!
+      if self.respond_to?("#{type}_#{method}")
+        if not callback_actions.include? "#{type}_#{method}".to_sym
+          #callback_actions << Callback.new(method, "#{type}_#{method}".to_sym)
+          callback = self.class.add_callback_action(type, method, "#{type}_#{method}".to_sym)
+          callback_actions << callback
+        end
+      end
+      
+      return callback_actions
     end
     
     def class_callback_actions

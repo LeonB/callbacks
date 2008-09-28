@@ -3,3 +3,10 @@
 * First release
   * API not yet stable
   * Only supports adding hooks to classes not instances. Instances are planned for 0.2
+
+== 0.0.2 / 2008-09-28
+
+* Second release!
+  * API still not stable
+  * Callbacks now picks up "before#{callback}" and "after_#{callback}" instance methods automatically
+  * Some documentation added
