@@ -67,7 +67,7 @@ mp.play
 <h2>How is this magic achieved?</h2>
 
 <p>
-  First of all: when you include the Callbacks module in a class,several class methods get added. For example:
+  First of all: when you include the Callbacks module in a class, several class methods get added. For example:
   <ul>
     <li>add_callback_methods</li>
     <li>callback_methods</li>
@@ -130,3 +130,22 @@ it overwrites the magically created method. </p>
 <h2>Future</h2>
 <p>In version 0.2 I want to add stuff so you can add callbacks to this one instance of a class and not ALL instances. If you have interesting suggestions: mail me!</p>
 <p>And I think about adding some method aliases like <code>add_hook</code> or <code>add_handler</code> and stuff like that.</p>
+<p>And what about another syntax? Like this</p>
+<% coderay(:lang => "ruby", :line_numbers => 'inline') do -%>
+class Tester
+  include Callbacks
+
+  add_callbacks do
+    before_exit do
+      p 'Going to exit'
+    end
+
+    after_exit :do_something_wicked
+  end
+
+  #this won't work anymore then
+  add_callback_methods :exit
+  after_exit :do_something_wicked
+end
+<% end %>
+<p>What do ya think? Keep the old syntax? Or use a new more dsl-like syntax? Please let me know!!!</p>
