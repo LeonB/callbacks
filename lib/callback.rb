@@ -4,7 +4,6 @@ class Callback
   ACCEPTED = [Symbol, Proc, String, Method]
   
   def initialize(method, input, &block)
-    #self.method = method
     self.input = input
     self.input = block if block_given?
     
@@ -25,17 +24,14 @@ class Callback
     case self.input
     when String
       Proc.new { eval(self.input) }
-    #else if self.input.respond_to?(self.method)
-    #    Proc.new { callback.send(method, self) }
-    #  end
     end
   end
   
   def generate_block
     case self.input
     when Symbol
-      symbol = self.input.to_sym
-      Proc.new { self.send(symbol) }
+      instance_method = self.input.to_sym
+      Proc.new { self.send(instance_method) }
     when Proc, Method
       self.input
     end

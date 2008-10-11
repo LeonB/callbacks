@@ -1,7 +1,7 @@
 module Callbacks
   module ClassMethods
     
-    def callback_methods
+    def callback_methods  
       #Use one @, else it gets stored in the module and then it will be avaiable in every class that uses callback
       @callback_methods ||= []
     end 
@@ -30,15 +30,38 @@ module Callbacks
       self.callback_methods.delete(method.to_sym)
     end
     
+    #TODO: make this nicer      
+    def callback_actions_for(method, type)
+      if self.callback_actions[method].nil?
+        callback_actions = []
+      else
+        callback_actions = self.callback_actions[method][type] ||= []
+      end
+      
+#Removed this because this didn't work
+#callback_actions_for is called four times with every callback method:
+# before, before metaclass, after, after metaclass
+# And a class and metaclass both now the #{type}_#{method} method
+# So it got called twice
+#      if self.instance_methods.include?("#{type}_#{method}")
+#        if not callback_actions.include? "#{type}_#{method}".to_sym
+#          callback = self.add_callback_action(type, method, "#{type}_#{method}".to_sym)
+#          callback_actions << callback
+#        end
+#      end
+      
+      return callback_actions 
+    end
+    
     def build_callback_methods(method)
       build_before_callback_method(method)
       build_after_callback_method(method)
       
       class_eval <<-"end_eval"
         def #{method}_with_callbacks
-          trigger_callback_actions(:#{method}, :before)
+          self.trigger_callback_actions(:#{method}, :before) 
           retval = self.send("#{method}_without_callbacks")
-          trigger_callback_actions(:#{method}, :after)
+          self.trigger_callback_actions(:#{method}, :after)
           return retval
         end
       end_eval
@@ -63,26 +86,28 @@ module Callbacks
       ca[method][type] << callback
       return callback
     end
-    
-    private
+   
     def build_before_callback_method(method)
-      instance_eval <<-"end_eval"
-      
-          def before_#{method}(*callbacks, &block)
-            add_callback_action :before, :#{method}, *callbacks, &block
-          end
-
-      end_eval
+      build_callback_method(:before, method)
     end
     
     def build_after_callback_method(method)
-      instance_eval <<-"end_eval"
+      build_callback_method(:after, method)
+    end
+    
+    def build_callback_method(type, method)
+      method = <<-"end_eval"
 
-          def after_#{method}(*callbacks, &block)
-            add_callback_action :after, :#{method}, *callbacks, &block
+#          def #{type}_#{method}(*callbacks, &block)
+#            self.class.add_callback_action(:#{type}, :#{method}, *callbacks, &block)
+#          end
+
+          def self.#{type}_#{method}(*callbacks, &block)
+            add_callback_action(:#{type}, :#{method}, *callbacks, &block)
           end
 
       end_eval
+      module_eval(method)
     end
     
   end

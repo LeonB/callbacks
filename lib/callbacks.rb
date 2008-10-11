@@ -9,7 +9,6 @@ module Callbacks
 
   #Sets all things right
   def self.included(base) #:nodoc:
-    base.extend Observable #why?
     base.extend Callbacks::ClassMethods
     base.send(:include, Callbacks::InstanceMethods)
   end

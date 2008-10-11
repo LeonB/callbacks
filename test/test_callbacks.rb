@@ -153,21 +153,6 @@ class CallbacksTest < Test::Unit::TestCase
     assert_equal ['before_exit'], $tests_run
   end
   
-#  def test_should_not_raise_error_when_method_not_exist
-#    assert_nothing_raised do 
-#      Tester.add_callback_methods :doesnotexist
-#    end
-#  end
-  
-#  def test_no_method_callback_should_not_add_method
-#    Tester.add_callback_methods :nomethodcallback
-#    t = Tester.new
-#    
-#    assert_raise NameError do 
-#      t.nomethodcallback
-#    end
-#  end
-  
   def test_should_use_defined_methods_in_class_as_callback
     Tester.add_callback_methods :callback_with_defined_method
     t = Tester.new
@@ -185,16 +170,17 @@ class CallbacksTest < Test::Unit::TestCase
     end
   end
   
-  #  def test_callbacks_created_in_class_should_be_vissible_in_instance
-  #    Tester.add_callback_methods :boot, :exit
-  #    t = Tester.new
-  #    assert_equal [:boot, :exit], t.callbacks
-  #  end
+  def test_callbacks_created_in_class_should_be_vissible_in_instance
+    Tester.add_callback_methods :boot, :exit
+    Tester.new
+    assert_equal [:boot, :exit], Tester.callback_methods
+  end
   
-  #  def test_callback_created_in_instance_should_not_be_vissible_in_class
-  #    t = Tester.new
-  #    t.add_callback :boot
-  #    assert_equal [], Tester.callbacks
-  #  end
+  def test_predefined_callback_methods_should_run_once
+    Tester.add_callback_methods :callback_with_defined_method
+    t = Tester.new
+    t.callback_with_defined_method
+    assert $tests_run.length == 1
+  end
   
 end
