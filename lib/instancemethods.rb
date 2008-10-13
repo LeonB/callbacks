@@ -1,24 +1,16 @@
 module Callbacks
   module InstanceMethods
     
-    def callback_actions(show_classvars = true)
-      self.class_callback_actions
-    end
-    
-    def callback_actions_for(method, type)
-      self.class_callback_actions_for(method, type)
-    end
-    
-    def class_callback_actions
-      callback_actions.merge!(self.class.callback_actions)
-    end
-    
-    def class_callback_actions_for(method, type)
-      self.class.callback_actions_for(method, type)
-    end
-    
     def trigger_callback_actions(method, type)
-      self.callback_actions_for(method, type).each do |callback|
+      trigger_class_callback_actions(method, type) if self.class.respond_to?(:callback_actions_for)
+      trigger_metaclass_callback_actions(method, type) if self.metaclass.respond_to?(:callback_actions_for)
+      #Should I return something?
+    end
+    
+    #TODO: do something with a block or proc or something :p
+    #Instead of self.class/self.metaclass
+    def trigger_class_callback_actions(method, type)
+      self.class.callback_actions_for(method, type).each do |callback|
         
         if callback.block
           self.instance_eval(&callback.block)
@@ -31,9 +23,6 @@ module Callbacks
       if self.respond_to?("#{type}_#{method}")
         self.send("#{type}_#{method}")
       end
-    
-      trigger_metaclass_callback_actions(method, type)
-      #Should I return something?
     end
     
     def trigger_metaclass_callback_actions(method, type)
@@ -45,10 +34,8 @@ module Callbacks
           callback.proc.call
         end
       end
-    
       #Should I return something?
     end
-    
-  end
 
-end
+  end #InstanceMethods
+end #Callbacks

@@ -22,7 +22,7 @@ This package makes it simple to add callbacks a.k.a. "hooks" to ruby classes
     Object.send(:include, Callbacks)
     Object.add_callback_methods :inspect
     Object.before_inspect do
-    print "Going to inspect #{self.class}\n"
+      print "Going to inspect #{self.class}\n"
     end
 
     o = Object.new

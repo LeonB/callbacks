@@ -64,6 +64,18 @@ mp = MusicPlayer.new
 mp.play
 <% end %>
 
+<p>And one for the singleton stuffy</p>
+<% coderay(:lang => "ruby", :line_numbers => 'inline') do -%>
+  a = []
+  a.metaclass.send(:include, Callbacks)
+  a.metaclass.add_callback_methods :to_s
+  a.metaclass.before_to_s do
+    p "#{self.class}.to_s"
+    p "------------------"
+  end
+  a.to_s #and see the magic happen
+<% end %>
+
 <h2>How is this magic achieved?</h2>
 
 <p>

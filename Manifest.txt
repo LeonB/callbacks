@@ -26,4 +26,5 @@ tasks/test.rake
 test/profile.rb
 test/test_callbacks.rb
 test/test_helper.rb
+test/test_singleton_callbacks.rb
 test/tester_class.rb
