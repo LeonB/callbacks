@@ -69,4 +69,17 @@ class SingletonCallbacksTest < Test::Unit::TestCase
     assert $tests_run.include?('before_boot')
     assert $tests_run.include?('before_boot_2')
   end
+  
+  def test_singleton_callbacks_on_clean_object
+    a = Object.new
+    a.metaclass.send(:include, Callbacks)
+    a.metaclass.add_callback_methods :to_s
+    a.metaclass.before_to_s do
+      $tests_run << 'clean!'
+    end
+    a.to_s #and see the magic happen
+    
+    assert $tests_run.length == 1
+    assert $tests_run[0] == 'clean!'
+  end
 end
