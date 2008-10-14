@@ -10,3 +10,11 @@
   * API still not stable
   * Callbacks now picks up "before#{callback}" and "after_#{callback}" instance methods automatically
   * Some documentation added
+
+== 0.0.3 / 2008-10-14
+
+ * Callbacks per object instance (singleton callbacks)
+ * Shuffled some code between instancemethods and classmethods
+ * Some more tests
+ * API still not stable
+ * Some documentation added

@@ -30,13 +30,13 @@ class SingletonCallbacksTest < Test::Unit::TestCase
     assert_equal [], Tester.callback_methods
   end
     
-#  def test_callback_created_in_class_should_be_vissible_in_instance
-#    #This ain't gonna work...
-#    #I don't know how to get the variables
-#    Tester.add_callback_methods :boot
-#    t = Tester.new
-#    assert_equal [:boot], t.metaclass.callback_methods
-#  end
+  def test_callback_created_in_class_should_be_vissible_in_instance
+    #This ain't gonna work...
+    #I don't know how to get the variables
+    Tester.add_callback_methods :boot
+    t = Tester.new
+    assert_equal [:boot], t.metaclass.callback_methods
+  end
     
   def test_callbacks_created_in_class_and_instance_should_both_be_run
     Tester.add_callback_methods :boot

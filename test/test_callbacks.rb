@@ -183,4 +183,14 @@ class CallbacksTest < Test::Unit::TestCase
     assert $tests_run.length == 1
   end
   
+  def test_method_defined_after_include_should_work
+    Tester.send(:define_method, :after_include) do
+      $tests_run << 'after_include'
+    end
+    Tester.add_callback_methods :after_include
+    t = Tester.new
+    t.after_include
+    assert $tests_run.length == 1
+  end
+  
 end
