@@ -110,5 +110,16 @@ module Callbacks
       module_eval(method)
     end
     
+    ###### Specific class callback stuff
+    def add_class_callback_methods(*callback_methods)
+      self.meta_eval do
+        if not respond_to?(:add_callback_methods)
+          include Callbacks
+        end
+        
+        self.add_callback_methods(*callback_methods)
+      end
+    end
+    
   end
 end
