@@ -3,8 +3,7 @@ module Callbacks
   LIBPATH = ::File.expand_path(::File.dirname(__FILE__)) + ::File::SEPARATOR
   PATH = ::File.dirname(LIBPATH) + ::File::SEPARATOR
   
-  require 'observer'
-  require "#{PATH}/ext/metaid.rb"
+  require 'metaid'
   require 'callbackchain.rb'
   require 'instancemethods.rb'
   require 'classmethods.rb'
