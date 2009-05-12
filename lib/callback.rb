@@ -1,12 +1,13 @@
 class Callback
   attr_accessor :method, :input
-  attr_writer :proc
+  attr_writer :proc, :options
   ACCEPTED = [Symbol, Proc, String, Method]
   ACCEPTANCE_ERROR = "Callbacks must be a symbol denoting the method to call, a string to be evaluated, a block to be invoked, or an object responding to the callback method. %s is none of those."
   
-  def initialize(method, input, &block)
+  def initialize(method, input, options = {}, &block)
     self.input = input
     self.input = block if block_given?
+    self.options.merge!(options)
     
     if not ACCEPTED.include? self.input.class
       raise ACCEPTANCE_ERROR % self.input.class
@@ -40,5 +41,11 @@ class Callback
     else
       nil
     end
+  end
+
+  def options
+   @options ||= {
+        :priority => 10
+      }
   end
 end

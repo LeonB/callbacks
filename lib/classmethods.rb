@@ -49,7 +49,8 @@ module Callbacks
 #          callback_actions << callback
 #        end
 #      end
-      
+
+      #TODO: order by options[:priority]
       return callback_actions 
     end
     
@@ -70,18 +71,18 @@ module Callbacks
       send :alias_method, method, "#{method}_with_callbacks"
     end
 
-    def add_callback_action(type, method, *code, &block)
+    def add_callback_action(type, method, callback_code = nil, options = {}, &block)
       ca = self.callback_actions
       
       ca[method] = {} if ca[method].nil?
       ca[method][type] = [] if ca[method][type].nil?
       
       if block_given?
-        callback = Callback.new(method, nil, &block)
+        callback = Callback.new(method, nil, options, &block)
+      elsif not callback_code.nil?
+        callback = Callback.new(method, callback_code, options)
       else
-        code.each do |c|
-          callback = Callback.new(method, c)
-        end
+        raise 'No block and callback_code given'
       end
       ca[method][type] << callback
       return callback
@@ -98,12 +99,8 @@ module Callbacks
     def build_callback_method(type, method)
       method = <<-"end_eval"
 
-#          def #{type}_#{method}(*callbacks, &block)
-#            self.class.add_callback_action(:#{type}, :#{method}, *callbacks, &block)
-#          end
-
-          def self.#{type}_#{method}(*callbacks, &block)
-            add_callback_action(:#{type}, :#{method}, *callbacks, &block)
+          def self.#{type}_#{method}(callback_code = nil, options = {}, &block)
+            add_callback_action(:#{type}, :#{method}, callback_code, options, &block)
           end
 
       end_eval

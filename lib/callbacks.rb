@@ -2,12 +2,12 @@
 module Callbacks
   LIBPATH = ::File.expand_path(::File.dirname(__FILE__)) + ::File::SEPARATOR
   PATH = ::File.dirname(LIBPATH) + ::File::SEPARATOR
-  
+
   require 'metaid'
-  require 'callbackchain.rb'
-  require 'instancemethods.rb'
-  require 'classmethods.rb'
-  require 'callback.rb'
+  require LIBPATH + 'callbackchain.rb'
+  require LIBPATH + 'instancemethods.rb'
+  require LIBPATH + 'classmethods.rb'
+  require LIBPATH + 'callback.rb'
   
   #Sets all things right
   def self.included(base) #:nodoc:

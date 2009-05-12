@@ -3,7 +3,6 @@ Manifest.txt
 README.txt
 Rakefile
 Version.txt
-ext/metaid.rb
 lib/callback.rb
 lib/callbackchain.rb
 lib/callbacks.rb
@@ -25,6 +24,8 @@ tasks/svn.rake
 tasks/test.rake
 test/profile.rb
 test/test_callbacks.rb
+test/test_class_callbacks.rb
 test/test_helper.rb
 test/test_singleton_callbacks.rb
 test/tester_class.rb
+test_class_callbacks.rb
